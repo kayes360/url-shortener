@@ -1,0 +1,5 @@
+.btn:disabled {
+    color: #7f7f7f;
+    pointer-events: none; 
+    border-color:#b4b4b4; 
+}
