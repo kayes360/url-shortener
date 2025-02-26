@@ -18,7 +18,7 @@ export default function Nav() {
         className="btn btn-outline-primary  rounded-pill px-3" 
         type="button"
       >
-        List
+        URL List
       </NavLink>
     </div>
   );
