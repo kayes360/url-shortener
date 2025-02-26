@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import Nav from "./Components/Nav";
 import Home from "./Pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ListTable from "./Components/ListTable";
-import RedirectPage from "./Pages/Redirect";
+import ListTable from "./Components/ListTable"; 
 import './style.css'
 function App() {
   const [largeURL, setLargeURL] = useState("");
@@ -100,8 +99,7 @@ function App() {
             element={
               <ListTable allLinks={allLinks} setAllLinks={setAllLinks} fetchShortURL={fetchShortURL}/>
             }
-          />
-          <Route path="/:shortCode" element={<RedirectPage />} />
+          /> 
         </Routes>
       </BrowserRouter>
     </>

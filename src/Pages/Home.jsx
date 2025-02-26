@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import handleRedirect from "../utils";
 
 export default function Home({
   handleSubmit,
@@ -43,9 +44,9 @@ export default function Home({
               </div>
               <div className="d-flex align-items-center"> 
                 <p>Shortened URL: {" "}</p>
-                <p> 
-                  <a href={shortURL} className="text-primary" target="_blank">{shortURL || ""} </a>
-                </p>
+               
+                  <p   className="text-primary link-underline-primary link-text" onClick={() => handleRedirect(shortURL)}>{shortURL || ""} </p>
+                 
               </div>
             </div>
 

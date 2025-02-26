@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import handleRedirect from "../utils";
 
 export default function ListTable({ allLinks, setAllLinks, fetchShortURL }) {
   const [editing, setEditing] = useState(false);
@@ -105,9 +106,8 @@ export default function ListTable({ allLinks, setAllLinks, fetchShortURL }) {
                   )}
                 </td>
                 <td>
-                  <a href={link.newShortURL} target="_blank" rel="noopener noreferrer">
-                    {link.newShortURL}
-                  </a>
+                
+                  <p   className="text-primary link-underline-primary link-text" onClick={() => handleRedirect(link.newShortURL)}>{link.newShortURL || ""} </p>
                 </td>
                 <td>
                   <button
