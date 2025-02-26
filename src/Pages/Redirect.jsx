@@ -16,7 +16,7 @@ function RedirectPage() {
     }
   }, [shortCode, navigate]);
 
-  return <div>Redirecting...</div>; // Display a message while redirecting
+  return null // Display a message while redirecting
 }
 
 export default RedirectPage;
