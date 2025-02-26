@@ -10,11 +10,9 @@ function RedirectPage() {
     const originalUrl = urlMappings[shortCode]; // Look up the original URL using the shortCode
 
     if (originalUrl) {
-    //   window.location.href = originalUrl;
-    console.log("Original URL:", originalUrl);  
-    } else {
-    //   alert("Invalid short URL! Redirecting to home page.");
-    //   navigate("/");  
+      window.location.href = originalUrl; 
+    } else { 
+      navigate("/");  
     }
   }, [shortCode, navigate]);
 
