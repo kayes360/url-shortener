@@ -3,6 +3,7 @@ import Nav from "./Components/Nav";
 import Home from "./Pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListTable from "./Components/ListTable";
+import RedirectPage from "./Pages/Redirect";
 
 function App() {
   const [largeURL, setLargeURL] = useState("");
@@ -18,18 +19,18 @@ function App() {
   });
 
   //MAKING THE SHORT URL FROM API REQUEST
-  async function fetchShortURL(largeURL) {
-    try {
-      const response = await fetch(
-        `https://api.shrtco.de/v2/shorten?url=${largeURL}`
-      );
-      const data = await response.json();
-      const newShortURL = data.result.full_short_link;
-
-      return newShortURL;
-    } catch (e) {
-      alert(e);
-    }
+  function fetchShortURL(largeURL) {
+    // Simple base encoding (alternative: use a hashing algorithm)
+    const uniqueKey = btoa(largeURL).slice(0, 8); // Shortened unique key
+    const customDomain = "https://imrul-shorturl.vercel.app/"; // Replace with your own domain if needed
+    const shortURL = `${customDomain}${uniqueKey}`;
+  
+    // Store mapping in localStorage (or a backend DB in real-world cases)
+    const urlMappings = JSON.parse(localStorage.getItem("urlMappings")) || {};
+    urlMappings[uniqueKey] = largeURL;
+    localStorage.setItem("urlMappings", JSON.stringify(urlMappings));
+  
+    return shortURL;
   }
 
   const handleSubmit = async (e) => {
@@ -96,6 +97,7 @@ function App() {
               <ListTable allLinks={allLinks} setAllLinks={setAllLinks} fetchShortURL={fetchShortURL}/>
             }
           />
+          <Route path="/:shortCode" element={<RedirectPage />} />
         </Routes>
       </BrowserRouter>
     </>
