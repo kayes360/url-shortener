@@ -1,0 +1,7 @@
+{
+    "rewrites": [
+      { "source": "/:shortCode", "destination": "/index.html" },
+      { "source": "/list", "destination": "/index.html" },
+      { "source": "/", "destination": "/index.html" }
+    ]
+  }
