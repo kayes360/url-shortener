@@ -107,7 +107,7 @@ export default function ListTable({ allLinks, setAllLinks, fetchShortURL }) {
                 </td>
                 <td>
                 
-                  <p   className="text-primary link-underline-primary link-text" onClick={() => handleRedirect(link.newShortURL)}>{link.newShortURL || ""} </p>
+                  <p   className="text-primary link-text" onClick={() => handleRedirect(link.newShortURL)}>{link.newShortURL || ""} </p>
                 </td>
                 <td>
                   <button

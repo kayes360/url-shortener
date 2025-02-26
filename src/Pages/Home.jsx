@@ -36,16 +36,16 @@ export default function Home({
         {shortURL ? (
           <div className="border rounded p-4">
             <div>
-              <div className="d-flex align-items-center">  
+              <div className="d-flex align-items-center gap-2">  
                 <p>Large URL: {" "}</p>
                 <p> 
                   <a href={addedURL} className="text-primary">{addedURL || ""} </a>
                 </p>
               </div>
-              <div className="d-flex align-items-center"> 
+              <div className="d-flex align-items-center gap-2"> 
                 <p>Shortened URL: {" "}</p>
                
-                  <p   className="text-primary link-underline-primary link-text" onClick={() => handleRedirect(shortURL)}>{shortURL || ""} </p>
+                  <p   className="text-primary link-text" onClick={() => handleRedirect(shortURL)}>{shortURL || ""} </p>
                  
               </div>
             </div>

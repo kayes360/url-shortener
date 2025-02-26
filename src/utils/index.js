@@ -7,9 +7,8 @@ export default function handleRedirect(shortURL) {
     const originalUrl = urlMappings[shortCode];
   
     if (originalUrl) {
-      window.location.href = originalUrl; // Redirect instantly
+      window.open(originalUrl, "_blank"); // Open in new tab
     } else {
       console.error("Short URL not found:", shortURL);
     }
   }
-  
