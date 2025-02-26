@@ -1,20 +1,24 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-export default function RedirectPage() {
+function RedirectPage() {
   const { shortCode } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const urlMappings = JSON.parse(localStorage.getItem("urlMappings")) || {};
-    const originalURL = urlMappings[shortCode];
+    const originalUrl = urlMappings[shortCode]; // Look up the original URL using the shortCode
 
-    if (originalURL) {
-      window.location.href = originalURL; // Redirect to the original URL
+    if (originalUrl) {
+    //   window.location.href = originalUrl;
+    console.log("Original URL:", originalUrl);  
     } else {
-      navigate("/"); // Redirect to home if not found
+    //   alert("Invalid short URL! Redirecting to home page.");
+    //   navigate("/");  
     }
   }, [shortCode, navigate]);
 
-  return <h2>Redirecting...</h2>;
+  return <div>Redirecting...</div>; // Display a message while redirecting
 }
+
+export default RedirectPage;

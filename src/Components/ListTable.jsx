@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 
 export default function ListTable({ allLinks, setAllLinks, fetchShortURL }) {
-  // const links = JSON.parse(localStorage.getItem("allLinks"));
   const [editing, setEditing] = useState(false);
   const [largeURL, setLargeURL] = useState("");
-
+ 
   const editLink = (id) => {
     setAllLinks((prevState) => {
       const editableLink = prevState.map((link) => {
@@ -12,6 +11,7 @@ export default function ListTable({ allLinks, setAllLinks, fetchShortURL }) {
           return {
             ...link,
             editable: !link.editable,
+            
           };
         }
         return link;
@@ -19,41 +19,38 @@ export default function ListTable({ allLinks, setAllLinks, fetchShortURL }) {
       return editableLink;
     });
   };
- 
+
   const updateLink = async (e, id) => {
     e.preventDefault();
-    console.log(id);
-    let updatedLargeURL = "";
-    if (largeURL) {
-      updatedLargeURL = largeURL;
-    } else {
-      const matchedURL = allLinks.filter((link) => link.id === id);
-      updatedLargeURL = matchedURL[0].largeURL;
-    }
+  
+    let updatedLargeURL = largeURL || allLinks.find((link) => link.id === id).largeURL;
+  
     try {
-      const newShortURL = await fetchShortURL(updatedLargeURL);
-      console.log(newShortURL); 
+      const newShortURL = fetchShortURL(updatedLargeURL); // No need for `await` since it's not async
+  
       setAllLinks((prevState) => {
-        const editableLink = prevState.map((link) => {
+        const updatedLinks = prevState.map((link) => {
           if (link.id === id) {
             return {
               ...link,
-              largeURL,
+              largeURL: updatedLargeURL,
               newShortURL,
-              editable: !link.editable,
+              editable: false, // Ensure it exits edit mode
             };
           }
           return link;
         });
-        localStorage.setItem("allLinks", JSON.stringify(editableLink));
-        return editableLink;
-      });  
+  
+        localStorage.setItem("allLinks", JSON.stringify(updatedLinks));
+        return updatedLinks;
+      });
+  
+      setLargeURL(""); // Reset input field
     } catch (error) {
       console.error(error);
-    }  
-   
- 
+    }
   };
+  
 
   const deleteLink = (id) => {
     const updatedLinks = allLinks.filter((link) => link.id !== id);
@@ -64,77 +61,77 @@ export default function ListTable({ allLinks, setAllLinks, fetchShortURL }) {
   return (
     <>
       {allLinks.length > 0 ? (
-        <table className="table container">
-          <thead>
-            <tr>
-              <th scope="col">state</th>
-              <th scope="col">id</th>
+        <table className="table table-striped table-bordered table-hover container mt-4">
+          <thead className="table-light">
+            <tr> 
+              <th scope="col">ID</th>
               <th scope="col">Long URL</th>
-              <th scope="col">Shortend URL</th>
+              <th scope="col">Shortened URL</th>
               <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
             {allLinks.map((link) => (
-              <tr key={link.id}>
-                <th scope="row"> {link.editable + ""}</th>
-                <th scope="row">{link.id}</th>
-                <td>
+                <tr key={link.id}> 
+                <td>{link.id}</td>
+                <td className="largeURL">
                   {!link.editable ? (
                     <a
                       href={link.largeURL}
                       className="text-wrap"
                       target="_blank"
-                      rel="noopener"
+                      rel="noopener noreferrer"
                     >
                       {link.largeURL}
                     </a>
                   ) : (
-                    <form
-                      onSubmit={(e) => {
-                        updateLink(e, link.id);
-                      }}
-                    >
+                    <form onSubmit={(e) => updateLink(e, link.id)}>
                       <input
                         type="text"
                         className="form-control"
-                        value={largeURL ? largeURL : link.largeURL}
+                        value={largeURL || link.largeURL}
                         onChange={(e) => setLargeURL(e.target.value)}
                       />
-                      <button className=" btn btn-outline-primary">
-                        Update Link
-                      </button>
+                      <div className="d-flex gap-2">
+                          <button className="btn btn-outline-primary mt-2">
+                            Update Link
+                          </button>
+                          <button className="btn btn-outline-dark mt-2" onClick={() => { setEditing(false) }}>
+                            Cancel
+                          </button>
+                          
+                      </div>
                     </form>
                   )}
                 </td>
                 <td>
-                  <a href={link.newShortURL} target="_blank" rel="noopener">
+                  <a href={link.newShortURL} target="_blank" rel="noopener noreferrer">
                     {link.newShortURL}
                   </a>
                 </td>
                 <td>
                   <button
                     disabled={editing}
-                    className=" fs-4 mx-2 btn btn-outline-primary bi bi-pencil-square"
-                    onClick={() => {
-                      editLink(link.id);
-                    }}
-                  ></button>
+                    className="btn btn-sm btn-outline-primary mx-1"
+                    onClick={() => editLink(link.id)}
+                  >
+                    Edit
+                  </button>
                   <button
                     disabled={editing}
-                    className=" fs-4 mx-2 btn btn-outline-primary bi bi-trash"
+                    className="btn btn-sm btn-outline-danger mx-1"
                     onClick={() => deleteLink(link.id)}
-                  ></button>
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       ) : (
-        <h1 className="container text-danger">no link</h1>
+        <h1 className="container text-danger">No links available</h1>
       )}
     </>
   );
 }
-
- 

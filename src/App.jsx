@@ -4,9 +4,11 @@ import Home from "./Pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ListTable from "./Components/ListTable";
 import RedirectPage from "./Pages/Redirect";
-
+import './style.css'
 function App() {
   const [largeURL, setLargeURL] = useState("");
+  const [addedURL, setAddedURL] = useState("");
+
   const [shortURL, setShortURL] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -21,25 +23,26 @@ function App() {
   //MAKING THE SHORT URL FROM API REQUEST
   function fetchShortURL(largeURL) {
     // Simple base encoding (alternative: use a hashing algorithm)
-    const uniqueKey = btoa(largeURL).slice(0, 8); // Shortened unique key
-    const customDomain = "https://imrul-shorturl.vercel.app/"; // Replace with your own domain if needed
+    const uniqueKey = crypto.randomUUID().slice(0, 8); // Generate a unique key
+    const customDomain = "https://imrul-shorturl.vercel.app/";
     const shortURL = `${customDomain}${uniqueKey}`;
   
     // Store mapping in localStorage (or a backend DB in real-world cases)
     const urlMappings = JSON.parse(localStorage.getItem("urlMappings")) || {};
     urlMappings[uniqueKey] = largeURL;
-    localStorage.setItem("urlMappings", JSON.stringify(urlMappings));
-  
+    localStorage.setItem("urlMappings", JSON.stringify(urlMappings)); 
     return shortURL;
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newShortURL = await fetchShortURL(largeURL);
-      setShortURL(newShortURL);
-
+      const newShortURL = fetchShortURL(largeURL);
+      setAddedURL(largeURL)
+      setShortURL(newShortURL); 
       // SETTING THE LIST
+      console.log('largeURL',largeURL)
+      console.log('newShortURL',newShortURL)
       if (newShortURL != null) {
         setAllLinks((prevState) => {
           const updatedList = [
@@ -60,7 +63,7 @@ function App() {
     } catch (error) {
       console.error(error);
     }
-    setLargeURL("");
+ 
   };
 
   useEffect(() => {
@@ -84,6 +87,7 @@ function App() {
               <Home
                 handleSubmit={handleSubmit}
                 largeURL={largeURL}
+                addedURL={addedURL}
                 setLargeURL={setLargeURL}
                 shortURL={shortURL}
                 copied={copied}

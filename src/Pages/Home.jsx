@@ -4,9 +4,10 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 
 export default function Home({
   handleSubmit,
+  addedURL,
   largeURL,
   setLargeURL,
-  shortURL, 
+  shortURL,
   copied,
   setCopied,
 }) {
@@ -33,11 +34,21 @@ export default function Home({
         </form>
         {shortURL ? (
           <div className="border rounded p-4">
-            <p>
-              Large URL:
-              <span className="text-secondary">{largeURL || ""} </span>
-            </p>
-            <a href={shortURL}>{shortURL}</a>
+            <div>
+              <div className="d-flex align-items-center">  
+                <p>Large URL: {" "}</p>
+                <p> 
+                  <a href={addedURL} className="text-primary">{addedURL || ""} </a>
+                </p>
+              </div>
+              <div className="d-flex align-items-center"> 
+                <p>Shortened URL: {" "}</p>
+                <p> 
+                  <a href={shortURL} className="text-primary" target="_blank">{shortURL || ""} </a>
+                </p>
+              </div>
+            </div>
+
             <div className="input-group mb-3">
               <input
                 type="text"
